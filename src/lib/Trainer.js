@@ -1,4 +1,4 @@
-const { MSE, CE } = require( './costFunction' );
+const { MSE } = require( './costFunction' );
 
 class Trainer {
 	/**

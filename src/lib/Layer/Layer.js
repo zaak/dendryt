@@ -1,13 +1,12 @@
 const Neuron = require( '../Neuron' );
 const { uid } = require( '../utils' );
-const connectionStrategy = require( '../connectionStrategy' );
 
 /**
  * Abstract base for different layer types.
  */
 class Layer {
 	constructor( size, initialize = true ) {
-		if ( new.target === Layer ) {
+		if ( this.constructor === Layer ) {
 			throw new Error( 'Cannot construct Abstract Layer instances directly' );
 		}
 
