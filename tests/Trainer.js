@@ -2,6 +2,7 @@ const assert = require( 'assert' );
 
 const Network = require( '../src/lib/Network' );
 const Trainer = require( '../src/lib/Trainer' );
+const costFunction = require( '../src/lib/costFunction' );
 
 describe( 'Trainer', () => {
 	it( 'should train AND gate', () => {
@@ -172,5 +173,61 @@ describe( 'Trainer', () => {
 		trainSets.forEach( ( { input, output } ) => {
 			assert.deepEqual( restoredNetwork.forward( input ).map( Math.round ), output );
 		} );
+	} );
+
+	it( 'should train network with semeion set', function() {
+		// This test may take a while.
+		this.timeout(2*60000);
+
+		const network = Network.create( [
+			{ type: 'input', size: 256 },
+			{ type: 'sigmoid', size: 32 },
+			{ type: 'softmax', size: 10 }
+		] );
+
+		const trainSets = require( './semeion.set' );
+
+		const trainer = new Trainer( network, {
+			costFunction: costFunction.CE, // For softmax layer cost should be calculated with cross-entropy function.
+			learningRate: 0.1,
+			iterations: 100000,
+			shuffle: true,
+			error: 0.005,
+			logging: true
+		} );
+
+		trainer.train( trainSets );
+
+		let recognized = 0, failed = 0;
+
+		trainSets.forEach( ( { input, output } ) => {
+			try {
+				assert.deepEqual( normalizeNetResponse( network.forward( input ) ), output );
+				recognized++;
+			} catch ( e ) {
+				failed++;
+			}
+		} );
+
+		console.log( `Properly recognized digits: ${recognized}`);
+		console.log( `Failed to recognize: ${failed}`);
+		assert( failed < 0.01 * trainSets.length );
+
+		// Normalize softmax layer response - pick the highest possibility
+		// and mark it as 1, and set 0 to others.
+		function normalizeNetResponse( arr ) {
+			let highestIndex = 0;
+
+			arr.forEach( ( v, i ) => {
+				if ( v > arr[ highestIndex ] ) {
+					highestIndex = i;
+				}
+			} );
+
+			const result = arr.map( v => 0 );
+			result[ highestIndex ] = 1;
+
+			return result;
+		}
 	} );
 } );
