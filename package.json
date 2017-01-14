@@ -1,0 +1,17 @@
+{
+  "name": "dendryt",
+  "version": "1.0.0",
+  "description": "Simple neural network library",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "keywords": [
+    "neural network",
+    "perceptron",
+    "mlp",
+    "backward propagation"
+  ],
+  "author": "pawel.wiaderny@gmail.com",
+  "license": "MIT"
+}
