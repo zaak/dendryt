@@ -5,6 +5,7 @@ const InputLayer = require( './Layer/Input' );
 const ReluLayer = require( './Layer/Relu' );
 const SigmoidLayer = require( './Layer/Sigmoid' );
 const SoftmaxLayer = require( './Layer/Softmax' );
+const TanhLayer = require( './Layer/Tanh' );
 
 class Network {
 	constructor( layers = [] ) {
@@ -157,7 +158,8 @@ const _layerTypeMap = {
 	input: InputLayer,
 	relu: ReluLayer,
 	sigmoid: SigmoidLayer,
-	softmax: SoftmaxLayer
+	softmax: SoftmaxLayer,
+	tanh: TanhLayer
 };
 
 module.exports = Network;

@@ -181,7 +181,7 @@ describe( 'Trainer', () => {
 
 		const network = Network.create( [
 			{ type: 'input', size: 256 },
-			{ type: 'sigmoid', size: 32 },
+			{ type: 'tanh', size: 32 },
 			{ type: 'softmax', size: 10 }
 		] );
 
